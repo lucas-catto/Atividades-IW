@@ -1,0 +1,252 @@
+PARTE 1
+
+Banco de Dados
+
+1.1. Iniciar o Xampp
+1.2. Iniciar o MySQL (Servidor)
+1.3. Excutar o script abaixo:
+
+CREATE DATABASE PokemonDB;
+USE PokemonDB;
+
+CREATE TABLE Pokemons (
+    ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Tipo VARCHAR(50),
+    Altura DECIMAL(4,2),
+    Peso DECIMAL(5,2),
+    Geracao INT,
+    Descricao TEXT
+);
+
+INSERT INTO Pokemons (Nome, Tipo, Altura, Peso, Geracao, Descricao)
+VALUES 
+('Bulbasaur', 'Planta', 0.7, 6.9, 1, 'Um Pokémon semente que adora tomar sol. Seu bulbo nasce com uma semente plantada nele.'),
+('Charmander', 'Fogo', 0.6, 8.5, 1, 'Tem preferência por coisas quentes. Quando chove, diz-se que o vapor jorra da ponta da cauda.'),
+('Squirtle', 'Água', 0.5, 9.0, 1, 'Depois do nascimento, sua volta é inchada e revestida por uma carapaça. Pode pulverizar espuma da boca.'),
+('Pikachu', 'Elétrico', 0.4, 6.0, 1, 'Pikachu, que pode gerar eletricidade poderosa, tem sacos nas bochechas que são extremamente macios e super elásticos.'),
+('Jigglypuff', 'Normal', 0.5, 5.5, 1, 'Jigglypuff possui pulmões grandes que podem inflar para se tornar redondos e macios. Eles colocam oponentes para dormir, cantando uma canção de ninar.'),
+('Psyduck', 'Água', 0.8, 19.6, 1, 'Psyduck usa um poder misterioso. Quando ele faz, sua dor de cabeça se intensifica.'),
+('Arcanine', 'Fogo', 1.9, 155.0, 1, 'Arcanine é conhecido por correr alegremente enquanto derrama chamas pelo corpo.'),
+('Machop', 'Lutador', 0.8, 19.5, 1, 'Machop é superpoderoso. Ele pode lançar cem adultos.'),
+('Tentacool', 'Água', 0.9, 45.5, 1, 'Tentacool absorve luz solar e reflete-a com um brilho vermelho.'),
+('Geodude', 'Pedra', 0.4, 20.0, 1, 'Geodude usa sua dura cabeça para perfurar boulders.'),
+('Ponyta', 'Fogo', 1.0, 30.0, 1, 'Ponyta é um Pokémon muito fraco ao nascer. Ela mal consegue ficar em pé. Este Pokémon se torna mais forte batendo as pernas e correndo.'),
+('Slowpoke', 'Água', 1.2, 36.0, 1, 'Slowpoke usa sua cauda para pegar presas mergulhando-a na água na beira da água.'),
+('Magnemite', 'Elétrico', 0.3, 6.0, 1, 'Magnemite se conecta a linhas de transmissão de energia para alimentar sua necessidade geral de eletricidade.'),
+('Doduo', 'Normal', 1.4, 39.2, 1, 'Doduo vive em pastagens abertas. Aves que são inativas na estação fria são conhecidas por serem Doduo.'),
+('Seel', 'Água', 1.1, 90.0, 1, 'Seel procura comida enquanto nada no ritmo de seus movimentos de remo.'),
+('Grimer', 'Veneno', 0.9, 30.0, 1, 'Grimer nasceu de lodo que foi transformado pela exposição a raios-X da lua.'),
+('Shellder', 'Água', 0.3, 4.0, 1, 'Shellder é protegido por uma concha dura. Abrir essa concha apenas é possível quando está relaxado.'),
+('Gastly', 'Fantasma', 1.3, 0.1, 1, 'Gastly é composto principalmente de gás venenoso.'),
+('Onix', 'Pedra', 8.8, 210.0, 1, 'Onix tem um imã em seu cérebro. Ele age como um compasso para que este Pokémon não perca a direção enquanto está cavando.'),
+('Drowzee', 'Psíquico', 1.0, 32.4, 1, 'Drowzee põe seus inimigos para dormir e come seus sonhos. Aparentemente, quanto mais o Drowzee come, mais feliz fica.');
+
+SELECT * FROM Pokemons;
+
+
+---------------------------------------
+
+PARTE 2
+
+API
+
+2.1 Criar uma pasta (Na área de trabalho) "pokemons/api"
+
+2.2 Usando o Prompt de comando, acesse a pasta "api" e digite o comando abaixo:
+
+npm init -y
+
+2.3 Instalar as bibliotecas da API
+
+npm install cors express mysql
+
+2.4 Abrir a aplicação no VSCode (code .)
+
+2.5 Criar um arquivo api.js e adicionar o código abaixo:
+
+
+const express = require('express');
+const mysql = require('mysql');
+const app = express();
+const cors = require('cors');
+const port = 3000;
+
+// Configuração do MySQL
+const banco = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'PokemonDB'
+});
+
+banco.connect((err) => {
+  if (err) throw err;
+  console.log('Conectado ao banco de dados!');
+});
+
+app.use(cors());
+
+// API Endpoint
+app.get('/pokemons', (req, res) => {
+  banco.query('SELECT * FROM Pokemons', (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+app.listen(port, () => {
+  console.log(`API rodando em http://localhost:${port}`);
+});
+
+
+2.6 Executar a api com o comando
+
+node api.js
+
+2.7 Abrir o navegar e entrar no endereço abaixo:
+
+localhost:3000/pokemons
+
+---------------------------------------
+
+PARTE 3
+
+Website
+
+3.1 Criar uma pasta (Na área de trabalho) "pokemons/web"
+
+3.2 Abrir a pasta no VSCode
+
+3.3 Criar 3 arquivos
+
+	index.html
+	site.css
+	script.js
+
+---------------------------------------
+
+Conteúdo do arquivo index.html
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemons</title>
+    <link rel="stylesheet" href="site.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Pokemons</h1>
+        <div id="pokemonList"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+---------------------------------------
+
+Conteúdo do arquivo site.css
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+    color: #333;
+}
+
+#pokemonList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pokemon-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin: 15px;
+    padding: 20px;
+    text-align: center;
+    flex-basis: calc(25% - 30px);
+}
+
+.pokemon-card h2 {
+    margin-bottom: 15px;
+    color: #007BFF;
+}
+
+.pokemon-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.pokemon-card p {
+    margin: 5px 0;
+}
+
+@media screen and (max-width: 992px) {
+    .pokemon-card {
+        flex-basis: calc(33.33% - 30px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .pokemon-card {
+        flex-basis: calc(50% - 30px);
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .pokemon-card {
+        flex-basis: calc(100% - 30px);
+    }
+}
+
+---------------------------------------
+
+Conteúdo do arquivo script.js
+
+fetch('http://localhost:3000/pokemons')
+.then(response => response.json())
+.then(data => {
+    let pokemonDiv = document.getElementById('pokemonList');
+    data.forEach(pokemon => {
+        let pokemonCard = document.createElement('div');
+        pokemonCard.classList.add('pokemon-card');
+        pokemonCard.innerHTML = `
+            <h2>${pokemon.Nome}</h2>
+            <img src="img/${pokemon.ID}.png" alt="${pokemon.Nome}">
+            <p><strong>Tipo:</strong> ${pokemon.Tipo}</p>
+            <p><strong>Altura:</strong> ${pokemon.Altura} m</p>
+            <p><strong>Peso:</strong> ${pokemon.Peso} kg</p>
+            <p><strong>Geração:</strong> ${pokemon.Geracao}</p>
+            <p><strong>Descrição:</strong> ${pokemon.Descricao}</p>
+        `;
+        pokemonDiv.appendChild(pokemonCard);
+    });
+})
+.catch(error => console.error(error));
+
+---------------------------------------
+
+3.4 Instalar no VSCode a Extensão Live Server e abrir a página no VSCode clicando em "Go Live"
