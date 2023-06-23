@@ -20,7 +20,7 @@ banco.connect((err) => {
 app.use(cors());
 
 // API Endpoint
-app.get('/////////////////////////////', (req, res) => {
+app.get('/BurgerCrazy', (req, res) => {
   banco.query('SELECT * FROM Lanche', (err, result) => {
     if (err) throw err;
     res.send(result);
